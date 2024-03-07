@@ -1,9 +1,6 @@
 import requests
 from config import BOT_TOKEN
 
-# Replace 'YOUR_BOT_TOKEN' with your actual bot token
-
-
 # Telegram API endpoint for getting information about the bot
 API_URL = f'https://api.telegram.org/bot{BOT_TOKEN}/getMe'
 
@@ -12,10 +9,10 @@ response = requests.get(API_URL)
 data = response.json()
 
 # Extract relevant information
-bot_id = data['result']['id']
-bot_name = data['result']['first_name']
-bot_username = data['result']['username']
-bot_mention = f'@{bot_username}'
+BOT_ID = data['result']['id']
+BOT_NAME = data['result']['first_name']
+BOT_USERNAME = data['result']['username']
+BOT_MENTION = f'[{BOT_NAME}](Https://t.me/{BOT_USERNAME})'
 
 # Print the obtained information
 print(f'Bot ID: {bot_id}')
