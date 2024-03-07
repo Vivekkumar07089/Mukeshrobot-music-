@@ -4,7 +4,7 @@ from pyrogram import filters
 from pyrogram.types import Message
 from VIPMUSIC.misc import SUDOERS
 from VIPMUSIC import LOGGER, app
-from VIPMUSIC import userbot as app2
+from VIPMUSIC.core.userbot import Userbot as app2
 
 # Define a command handler for /botinfo
 @app.on_message(filters.command("botinfo"))
