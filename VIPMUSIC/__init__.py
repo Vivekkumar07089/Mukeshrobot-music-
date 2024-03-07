@@ -27,9 +27,18 @@ Resso = RessoAPI()
 Telegram = TeleAPI()
 YouTube = YouTubeAPI()
 
-
+"""
 getme = await app.get_me()
 BOT_ID = getme.id
 BOT_NAME = getme.first_name
 BOT_USERNAME = getme.username
-BOT_MENTION = getme.mention
+BOT_MENTION = getme.mention"""
+async def get_bot_info():
+    getme = await app.get_me()
+    BOT_ID = getme.id
+    BOT_NAME = getme.first_name
+    BOT_USERNAME = getme.username
+    BOT_MENTION = getme.mention
+
+# Call the function to get the bot info
+await get_bot_info()
