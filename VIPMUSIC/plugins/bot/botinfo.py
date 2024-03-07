@@ -1,7 +1,7 @@
 import requests
 from config import BOT_TOKEN
 from VIPMUSIC import app
-#app is a pyrogram client 
+
 
 # Telegram API endpoint for getting information about the bot
 API_URL = f'https://api.telegram.org/bot{BOT_TOKEN}/getMe'
