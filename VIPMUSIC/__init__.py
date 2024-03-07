@@ -27,7 +27,7 @@ Resso = RessoAPI()
 Telegram = TeleAPI()
 YouTube = YouTubeAPI()
 
-from botinfo import BOT_NAME, BOT_USERNAME, BOT_ID, BOT_MENTION
+from VIPMUSIC.plugins.bot.botinfo import BOT_NAME, BOT_USERNAME, BOT_ID, BOT_MENTION
 
 BOT_MENTION = BOT_MENTION
 BOT_ID = BOT_ID
