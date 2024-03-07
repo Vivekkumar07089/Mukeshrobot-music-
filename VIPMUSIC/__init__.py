@@ -28,13 +28,6 @@ Telegram = TeleAPI()
 YouTube = YouTubeAPI()
 
 
-getme = app.get_me()
-BOT_ID = getme.id
-BOT_NAME = getme.first_name
-BOT_USERNAME = getme.username
-BOT_MENTION = getme.mention
-
-"""
 async def get_bot_info():
     getme = await app.get_me()
     BOT_ID = getme.id
@@ -47,4 +40,3 @@ async def get_bot_info():
 
 # Call the function to get the bot info
 BOT_ID, BOT_NAME, BOT_USERNAME, BOT_MENTION = await get_bot_info()
-"""
