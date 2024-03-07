@@ -1,7 +1,8 @@
 import requests
+from config import BOT_TOKEN
 
 # Replace 'YOUR_BOT_TOKEN' with your actual bot token
-BOT_TOKEN = 'YOUR_BOT_TOKEN'
+
 
 # Telegram API endpoint for getting information about the bot
 API_URL = f'https://api.telegram.org/bot{BOT_TOKEN}/getMe'
