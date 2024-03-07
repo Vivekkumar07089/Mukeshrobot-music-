@@ -26,3 +26,10 @@ Spotify = SpotifyAPI()
 Resso = RessoAPI()
 Telegram = TeleAPI()
 YouTube = YouTubeAPI()
+
+
+getme = await app.get_me()
+BOT_ID = getme.id
+BOT_NAME = getme.first_name
+BOT_USERNAME = getme.username
+BOT_MENTION = getme.mention
