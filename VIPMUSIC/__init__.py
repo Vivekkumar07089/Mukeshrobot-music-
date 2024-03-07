@@ -28,9 +28,11 @@ Telegram = TeleAPI()
 YouTube = YouTubeAPI()
 
 
-from VIPMUSIC.plugins.bot.botinfo import BOT_NAME, BOT_USERNAME, BOT_ID, BOT_MENTION
+from VIPMUSIC.plugins.bot import botinfo
 
-BOT_MENTION = BOT_MENTION
-BOT_ID = BOT_ID
-BOT_NAME = BOT_NAME
-BOT_USERNAME = BOT_USERNAME
+
+
+BOT_MENTION = botinfo.BOT_MENTION
+BOT_ID = botinfo.BOT_ID
+BOT_NAME = botinfo.BOT_NAME
+BOT_USERNAME = botinfo.BOT_USERNAME
