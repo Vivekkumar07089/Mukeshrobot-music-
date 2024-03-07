@@ -1,9 +1,10 @@
 import requests
 from config import BOT_TOKEN
 from pyrogram import filters
-from VIPMUSIC import app
 from pyrogram.types import Message
 from VIPMUSIC.misc import SUDOERS
+from VIPMUSIC import LOGGER, app
+from VIPMUSIC import userbot as app2
 
 # Define a command handler for /botinfo
 @app.on_message(filters.command("botinfo"))
@@ -30,8 +31,6 @@ async def send_bot_info(chat_id):
     # Use Pyrogram client to send the message
     await app.send_message(chat_id=chat_id, text=message)
 
-
-from VIPMUSIC import LOGGER, app2
 
 ASS_MENTION= "VIVEK"
 
