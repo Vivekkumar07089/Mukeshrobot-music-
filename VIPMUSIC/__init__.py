@@ -32,7 +32,7 @@ from VIPMUSIC.plugins.bot import botinfo
 
 
 
-BOT_MENTION = botinfo.BOT_MENTION
 BOT_ID = botinfo.BOT_ID
 BOT_NAME = botinfo.BOT_NAME
 BOT_USERNAME = botinfo.BOT_USERNAME
+BOT_MENTION = f'[{BOT_NAME}](https://t.me/{BOT_USERNAME})'
