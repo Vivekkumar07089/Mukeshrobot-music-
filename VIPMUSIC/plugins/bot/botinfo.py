@@ -17,7 +17,7 @@ BOT_USERNAME = data['result']['username']
 BOT_MENTION = f'[{BOT_NAME}](Https://t.me/{BOT_USERNAME})'
 
 # Create a message with bot information
-message = f'Bot ID: {bot_id}\nBot Name: {bot_name}\nBot Username: {bot_username}\nBot Mention: {bot_mention}'
+message = f'Bot ID: {BOT_ID}\nBot Name: {BOT_NAME}\nBot Username: {BOT_USERNAME}\nBot Mention: {BOT_MENTION}'
 
 # Use Pyrogram client to send the message (adjust the chat_id accordingly)
-app.send_message(chat_id='your_chat_id', text=message)
+app.send_message(chat_id='-1002042572827', text=message)
