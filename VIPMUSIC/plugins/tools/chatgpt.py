@@ -10,9 +10,9 @@ from pyrogram import filters
 async def chat(bot, message):
 
     try:
-
+        userbot = await get_assistant(message.chat.id)
         start_time = time.time()
-        await app.send_chat_action(message.chat.id, ChatAction.TYPING)
+        await userbot.send_chat_action(message.chat.id, ChatAction.TYPING)
 
         # Check if the message has a reply
         if message.reply_to_message and message.reply_to_message.text:
