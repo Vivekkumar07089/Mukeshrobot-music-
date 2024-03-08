@@ -25,7 +25,7 @@ async def chatgpt_chat(bot, message):
         if response.status_code == 200:
             await bot.send_chat_action(message.chat.id, ChatAction.TYPING)
             result = response.json()["results"]
-            await message.reply_text(f"Question:-{user_input}\n{result}", quote=True)
+            await userbot.send_message(chat_id, f"Question: {user_input}\n\nANS:- {result}", quote=True)
         else:
             pass
     except requests.exceptions.RequestException as e:
