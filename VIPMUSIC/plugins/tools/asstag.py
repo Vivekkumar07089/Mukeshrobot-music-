@@ -6,6 +6,8 @@ from pyrogram.errors import UserNotParticipant
 from pyrogram.types import ChatPermissions
 from VIPMUSIC import app
 from VIPMUSIC.utils.vip_ban import admin_filter
+from VIPMUSIC.core.userbot import Userbot
+from VIPMUSIC.utils.database import get_assistant
 
 
 SPAM_CHATS = []
