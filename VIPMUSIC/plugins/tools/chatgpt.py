@@ -3,6 +3,8 @@ from pyrogram import filters
 import requests
 import time
 from pyrogram.enums import ChatAction, ParseMode
+from VIPMUSIC.core.userbot import Userbot
+from VIPMUSIC.utils.database import get_assistant
 
 
 @app.on_message(filters.command(["chatgpt", "ai", "ask"], prefixes=["+", ".", "/", "-", "?", "$", "#", "&"]))
