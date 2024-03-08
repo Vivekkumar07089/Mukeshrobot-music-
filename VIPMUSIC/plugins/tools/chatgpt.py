@@ -23,14 +23,14 @@ async def chat(bot, message):
             user_input = " ".join(message.command[1:])
 
         if len(user_input) < 1:
-            await userbot.send_message("Example\n\n`/blackai write simple website code using html css, js?`")
+            await userbot.send_message(chat_id=viv, "Example\n\n`/blackai write simple website code using html css, js?`")
         else:
             response = requests.get(f'https://blackai.apinepdev.workers.dev/?question={user_input}')
             x = response.json()["answer"]
 
             end_time = time.time()
             telegram_ping = str(round((end_time - start_time) * 1000, 3)) + " ᴍs"
-            await message.reply_text(f" {x}", parse_mode=ParseMode.MARKDOWN)
+            await userbot.send_message(f" {x}", parse_mode=ParseMode.MARKDOWN)
 
     except Exception as e:
-        await message.reply_text(f"**ᴇʀʀᴏʀ: {e} ")
+        await userbot.send_message(f"**ᴇʀʀᴏʀ: {e} ")
