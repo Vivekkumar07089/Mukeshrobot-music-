@@ -11,7 +11,7 @@ async def chat(bot, message):
 
     try:
         viv = message.chat.id
-        userbot = await get_assistant(message.chat.id)
+        userbot = await get_assistant(viv)
         start_time = time.time()
         await userbot.send_chat_action(message.chat.id, ChatAction.TYPING)
 
