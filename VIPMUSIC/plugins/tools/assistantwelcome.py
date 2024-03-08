@@ -1,13 +1,26 @@
 from VIPMUSIC import app
-from pyrogram import filters
+from pyrogram import Client, filters
+from pyrogram.enums import ChatMemberStatus
+from pyrogram.errors import (
+    ChatAdminRequired,
+    InviteRequestSent,
+    UserAlreadyParticipant,
+    UserNotParticipant,
+)
 from pyrogram.errors import RPCError
 from pyrogram.types import ChatMemberUpdated, InlineKeyboardMarkup, InlineKeyboardButton
 from os import environ
 from typing import Union, Optional
 from PIL import Image, ImageDraw, ImageFont
 from os import environ
+import requests
 import random
-import asyncio
+from VIPMUSIC import app
+from VIPMUSIC.misc import SUDOERS
+from pyrogram import * 
+from pyrogram.types import *
+from VIPMUSIC.utils.vip_ban import admin_filter
+import random
 from pyrogram import Client, filters
 from pyrogram.types import ChatJoinRequest, InlineKeyboardButton, InlineKeyboardMarkup
 from PIL import Image, ImageDraw, ImageFont
@@ -22,21 +35,13 @@ from pyrogram.types import *
 from logging import getLogger
 from VIPMUSIC.utils.vip_ban import admin_filter
 import os
+from VIPMUSIC.misc import SUDOERS
 from PIL import ImageDraw, Image, ImageFont, ImageChops
 from pyrogram import *
 from pyrogram.types import *
 from logging import getLogger
+from VIPMUSIC.core.userbot import Userbot
 from VIPMUSIC.utils.database import get_assistant
-from time import time
-import asyncio
-from VIPMUSIC.utils.extraction import extract_user
-
-# Define a dictionary to track the last message timestamp for each user
-user_last_message_time = {}
-user_command_count = {}
-# Define the threshold for command spamming (e.g., 20 commands within 60 seconds)
-SPAM_THRESHOLD = 2
-SPAM_WINDOW_SECONDS = 5
 
 random_photo = [
     "https://telegra.ph/file/1949480f01355b4e87d26.jpg",
@@ -46,6 +51,7 @@ random_photo = [
     "https://telegra.ph/file/2973150dd62fd27a3a6ba.jpg",
 ]
 # --------------------------------------------------------------------------------- #
+
 
 
 
@@ -108,26 +114,6 @@ def welcomepic(pic, user, chatname, id, uname, brightness_factor=1.3):
 
 @app.on_message(filters.command("awelcome") & ~filters.private)
 async def auto_state(_, message):
-    user_id = message.from_user.id
-    current_time = time()
-    # Update the last message timestamp for the user
-    last_message_time = user_last_message_time.get(user_id, 0)
-
-    if current_time - last_message_time < SPAM_WINDOW_SECONDS:
-        # If less than the spam window time has passed since the last message
-        user_last_message_time[user_id] = current_time
-        user_command_count[user_id] = user_command_count.get(user_id, 0) + 1
-        if user_command_count[user_id] > SPAM_THRESHOLD:
-            # Block the user if they exceed the threshold
-            hu = await message.reply_text(f"**{message.from_user.mention} ᴘʟᴇᴀsᴇ ᴅᴏɴᴛ ᴅᴏ sᴘᴀᴍ, ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ ᴀғᴛᴇʀ 5 sᴇᴄ**")
-            await asyncio.sleep(3)
-            await hu.delete()
-            return 
-    else:
-        # If more than the spam window time has passed, reset the command count and update the message timestamp
-        user_command_count[user_id] = 1
-        user_last_message_time[user_id] = current_time
-
     usage = "**ᴜsᴀɢᴇ:**\n**⦿ /awelcome [on|off]**"
     if len(message.command) == 1:
         return await message.reply_text(usage)
@@ -141,40 +127,75 @@ async def auto_state(_, message):
         state = message.text.split(None, 1)[1].strip().lower()
         if state == "off":
             if A:
-                await message.reply_text("**ᴀssɪsᴛᴀɴᴛ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴅɪsᴀʙʟᴇᴅ !**")
+                await message.reply_text("**ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ᴀʟʀᴇᴀᴅʏ ᴅɪsᴀʙʟᴇᴅ !**")
             else:
                 await wlcm.add_wlcm(chat_id)
-                await message.reply_text(f"**ᴅɪsᴀʙʟᴇᴅ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ** {message.chat.title} ʙʏ ᴀssɪsᴛᴀɴᴛ")
+                await message.reply_text(f"**ᴅɪsᴀʙʟᴇᴅ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ** {message.chat.title}")
         elif state == "on":
             if not A:
-                await message.reply_text("**ᴇɴᴀʙʟᴇᴅ ᴀssɪsᴛᴀɴᴛ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ.**")
+                await message.reply_text("**ᴇɴᴀʙʟᴇ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ.**")
             else:
                 await wlcm.rm_wlcm(chat_id)
-                await message.reply_text(f"**ᴇɴᴀʙʟᴇᴅ ᴀssɪsᴛᴀɴᴛ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ ** {message.chat.title}")
+                await message.reply_text(f"**ᴇɴᴀʙʟᴇᴅ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ ɪɴ ** {message.chat.title}")
         else:
             await message.reply_text(usage)
     else:
-        await message.reply("**sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴇɴᴀʙʟᴇ ᴀssɪsᴛᴀɴᴛ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ!**")
+        await message.reply("**sᴏʀʀʏ ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴇɴᴀʙʟᴇ ᴡᴇʟᴄᴏᴍᴇ ɴᴏᴛɪғɪᴄᴀᴛɪᴏɴ!**")
 
 
 
-@app.on_chat_member_updated(filters.group, group=-2)
-async def greet_new_members(_, member: ChatMemberUpdated):
-    try:
+@app.on_chat_member_updated(filters.group, group=-3)
+async def greet_new_member(_, member: ChatMemberUpdated):
+    chat_id = member.chat.id
+    userbot = await get_assistant(chat_id)
+    count = await app.get_chat_members_count(chat_id)
+    A = await wlcm.find_one(chat_id)
+    if A:
+        return
 
-        chat_id = member.chat.id
-        userbot = await get_assistant(chat_id)
-        count = await app.get_chat_members_count(chat_id)
-        A = await wlcm.find_one(chat_id)
-        if A:
-            return
+    user = member.new_chat_member.user if member.new_chat_member else member.from_user
 
-        user = member.new_chat_member.user if member.new_chat_member else member.from_user
+    # Add the modified condition here
+    if member.new_chat_member and not member.old_chat_member:
 
-        # Add the modified condition here
-        if member.new_chat_member and not member.old_chat_member:
-            welcome_text = f"""**Wᴇʟᴄᴏᴍᴇ** {user.mention}\n**@{user.username}**"""
-            await asyncio.sleep(3) 
-            await userbot.send_message(chat_id, text=welcome_text)
-    except Exception as e:
-       LOGGER.error(e)
+        try:
+            pic = await app.download_media(
+                user.photo.big_file_id, file_name=f"pp{user.id}.png"
+            )
+        except AttributeError:
+            pic = "VIPMUSIC/assets/upic.png"
+        if (temp.MELCOW).get(f"welcome-{member.chat.id}") is not None:
+            try:
+                await temp.MELCOW[f"welcome-{member.chat.id}"].delete()
+            except Exception as e:
+                LOGGER.error(e)
+        try:
+            welcomeimg = welcomepic(
+                pic, user.first_name, member.chat.title, user.id, user.username
+            )
+            button_text = "๏ ᴠɪᴇᴡ ɴᴇᴡ ᴍᴇᴍʙᴇʀ ๏"
+            add_button_text = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
+            deep_link = f"tg://openmessage?user_id={user.id}"
+            add_link = f"https://t.me/{app.username}?startgroup=true"
+            temp.MELCOW[f"welcome-{member.chat.id}"] = await userbot.send_photo(
+                member.chat.id,
+                photo=welcomeimg,
+                caption=f"""
+**❅────✦ ᴡᴇʟᴄᴏᴍᴇ ✦────❅**
+
+▰▰▰▰▰▰▰▰▰▰▰▰▰
+**➻ ɴᴀᴍᴇ »** {user.mention}
+**➻ ɪᴅ »** `{user.id}`
+**➻ ᴜ_ɴᴀᴍᴇ »** @{user.username}
+**➻ ᴛᴏᴛᴀʟ ᴍᴇᴍʙᴇʀs »** {count}
+▰▰▰▰▰▰▰▰▰▰▰▰▰
+
+**❅─────✧❅✦❅✧─────❅**
+""",
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton(button_text, url=deep_link)],
+                    [InlineKeyboardButton(text=add_button_text, url=add_link)],
+                ])
+            )
+        except Exception as e:
+            LOGGER.error(e)
