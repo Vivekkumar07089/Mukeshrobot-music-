@@ -150,7 +150,7 @@ async def greet_new_member(_, member: ChatMemberUpdated):
     userbot = await get_assistant(chat_id)
     count = await app.get_chat_members_count(chat_id)
     A = await wlcm.find_one(chat_id)
-    
+
     if A:
         return
 
@@ -180,7 +180,7 @@ async def greet_new_member(_, member: ChatMemberUpdated):
             add_button_text = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
             deep_link = f"tg://openmessage?user_id={user.id}"
             add_link = f"https://t.me/{app.username}?startgroup=true"
-            
+
             # Use userbot first
             try:
                 temp.MELCOW[f"welcome-{member.chat.id}"] = await userbot.send_photo(
@@ -203,7 +203,7 @@ async def greet_new_member(_, member: ChatMemberUpdated):
                 )
             except Exception as userbot_error:
                 LOGGER.error(userbot_error)
-                
+
                 # If userbot fails, use app
                 temp.MELCOW[f"welcome-{member.chat.id}"] = await app.send_photo(
                     member.chat.id,
