@@ -15,7 +15,7 @@ from PIL import Image, ImageDraw, ImageFont
 from os import environ
 import requests
 import random
-from VIPMUSIC import app
+from VIPMUSIC import app, userbot
 from VIPMUSIC.misc import SUDOERS
 from pyrogram import * 
 from pyrogram.types import *
@@ -40,8 +40,7 @@ from PIL import ImageDraw, Image, ImageFont, ImageChops
 from pyrogram import *
 from pyrogram.types import *
 from logging import getLogger
-from VIPMUSIC.core.userbot import Userbot
-from VIPMUSIC.utils.database import get_assistant
+
 
 random_photo = [
     "https://telegra.ph/file/1949480f01355b4e87d26.jpg",
@@ -147,10 +146,8 @@ async def auto_state(_, message):
 @app.on_chat_member_updated(filters.group, group=-3)
 async def greet_new_member(_, member: ChatMemberUpdated):
     chat_id = member.chat.id
-    userbot = await get_assistant(chat_id)
     count = await app.get_chat_members_count(chat_id)
     A = await wlcm.find_one(chat_id)
-
     if A:
         return
 
@@ -165,13 +162,11 @@ async def greet_new_member(_, member: ChatMemberUpdated):
             )
         except AttributeError:
             pic = "VIPMUSIC/assets/upic.png"
-
         if (temp.MELCOW).get(f"welcome-{member.chat.id}") is not None:
             try:
                 await temp.MELCOW[f"welcome-{member.chat.id}"].delete()
             except Exception as e:
                 LOGGER.error(e)
-
         try:
             welcomeimg = welcomepic(
                 pic, user.first_name, member.chat.title, user.id, user.username
@@ -180,46 +175,27 @@ async def greet_new_member(_, member: ChatMemberUpdated):
             add_button_text = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
             deep_link = f"tg://openmessage?user_id={user.id}"
             add_link = f"https://t.me/{app.username}?startgroup=true"
+            temp.MELCOW[f"welcome-{member.chat.id}"] = await app.send_photo(
+                member.chat.id,
+                photo=welcomeimg,
+                caption=f"""
+**❅────✦ ᴡᴇʟᴄᴏᴍᴇ ✦────❅**
 
-            # Use userbot first
-            try:
-                temp.MELCOW[f"welcome-{member.chat.id}"] = await userbot.send_photo(
-                    member.chat.id,
-                    photo=welcomeimg,
-                    caption=f"""
-                    **❅────✦ ᴡᴇʟᴄᴏᴍᴇ ✦────❅**
-                    ▰▰▰▰▰▰▰▰▰▰▰▰▰
-                    **➻ ɴᴀᴍᴇ »** {user.mention}
-                    **➻ ɪᴅ »** `{user.id}`
-                    **➻ ᴜ_ɴᴀᴍᴇ »** @{user.username}
-                    **➻ ᴛᴏᴛᴀʟ ᴍᴇᴍʙᴇʀs »** {count}
-                    ▰▰▰▰▰▰▰▰▰▰▰▰▰
-                    **❅─────✧❅✦❅✧─────❅**
-                    """,
-                    reply_markup=InlineKeyboardMarkup([
-                        [InlineKeyboardButton(button_text, url=deep_link)],
-                        [InlineKeyboardButton(text=add_button_text, url=add_link)],
-                    ])
-                )
-            except Exception as userbot_error:
-                LOGGER.error(userbot_error)
+▰▰▰▰▰▰▰▰▰▰▰▰▰
+**➻ ɴᴀᴍᴇ »** {user.mention}
+**➻ ɪᴅ »** `{user.id}`
+**➻ ᴜ_ɴᴀᴍᴇ »** @{user.username}
+**➻ ᴛᴏᴛᴀʟ ᴍᴇᴍʙᴇʀs »** {count}
+▰▰▰▰▰▰▰▰▰▰▰▰▰
 
-                # If userbot fails, use app
-                temp.MELCOW[f"welcome-{member.chat.id}"] = await app.send_photo(
-                    member.chat.id,
-                    photo=welcomeimg,
-                    caption=f"""
-                    **❅────✦ ᴡᴇʟᴄᴏᴍᴇ ✦────❅**
-                    ▰▰▰▰▰▰▰▰▰▰▰▰▰
-                    **➻ ɴᴀᴍᴇ »** {user.mention}
-                    **➻ ɪᴅ »** `{user.id}`
-                    **➻ ᴜ_ɴᴀᴍᴇ »** @{user.username}
-                    **➻ ᴛᴏᴛᴀʟ ᴍᴇᴍʙᴇʀs »** {count}
-                    ▰▰▰▰▰▰▰▰▰▰▰▰▰
-                    **❅─────✧❅✦❅✧─────❅**
-                    """,
-                    reply_markup=InlineKeyboardMarkup([
-                        [InlineKeyboardButton(button_text, url=deep_link)],
-                        [InlineKeyboardButton(text=add_button_text, url=add_link)],
-                    ])
-                )
+**❅─────✧❅✦❅✧─────❅**
+""",
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton(button_text, url=deep_link)],
+                    [InlineKeyboardButton(text=add_button_text, url=add_link)],
+                ])
+            )
+        except Exception as e:
+            LOGGER.error(e)
+
+
