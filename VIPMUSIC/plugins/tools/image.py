@@ -20,16 +20,18 @@ async def pinterest(_, message):
      media_group = []
      count = 0
 
-     msg = await message.reply(f"sᴄʀᴀᴘɪɴɢ ɪᴍᴀɢᴇs ғʀᴏᴍ ᴘɪɴᴛᴇʀᴇᴛs...")
+
+
+     msg = await userbot.send_message(chat_id, f"sᴄʀᴀᴘɪɴɢ ɪᴍᴀɢᴇs ғʀᴏᴍ ᴘɪɴᴛᴇʀᴇᴛs...")
      for url in images["images"][:6]:
 
           media_group.append(InputMediaPhoto(media=url))
           count += 1
-          await msg.edit(f"=> Bɢᴛ sᴄʀᴀᴘᴇᴅ ɪᴍᴀɢᴇs {count}")
+          await msg.edit(f"=> ɪᴍᴀɢᴇs sᴄʀᴀᴘᴇᴅ {count}")
 
      try:
 
-        await app.send_media_group(
+        await userbot.send_media_group(
                 chat_id=chat_id, 
                 media=media_group,
                 reply_to_message_id=message.id)
