@@ -3,11 +3,13 @@ from requests import get
 from VIPMUSIC import app
 from pyrogram import filters
 from pyrogram.types import InputMediaPhoto
+from VIPMUSIC.core.userbot import Userbot
+from VIPMUSIC.utils.database import get_assistant
 
 @app.on_message(filters.command(["image", "img"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]))
 async def pinterest(_, message):
      chat_id = message.chat.id
-
+     userbot = await get_assistant(chat_id)
      try:
        query= message.text.split(None,1)[1]
      except:
