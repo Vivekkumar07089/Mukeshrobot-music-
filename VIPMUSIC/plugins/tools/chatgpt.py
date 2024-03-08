@@ -10,6 +10,7 @@ from pyrogram import filters
 async def chat(bot, message):
 
     try:
+        viv = message.chat.id
         userbot = await get_assistant(message.chat.id)
         start_time = time.time()
         await userbot.send_chat_action(message.chat.id, ChatAction.TYPING)
@@ -22,7 +23,7 @@ async def chat(bot, message):
             user_input = " ".join(message.command[1:])
 
         if len(user_input) < 1:
-            await message.reply_text("Example\n\n`/blackai write simple website code using html css, js?`")
+            await userbot.send_message("Example\n\n`/blackai write simple website code using html css, js?`")
         else:
             response = requests.get(f'https://blackai.apinepdev.workers.dev/?question={user_input}')
             x = response.json()["answer"]
