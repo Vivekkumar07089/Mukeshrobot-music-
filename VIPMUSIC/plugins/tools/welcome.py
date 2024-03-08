@@ -15,7 +15,7 @@ from PIL import Image, ImageDraw, ImageFont
 from os import environ
 import requests
 import random
-from VIPMUSIC import app, userbot
+from VIPMUSIC import app
 from VIPMUSIC.misc import SUDOERS
 from pyrogram import * 
 from pyrogram.types import *
@@ -40,6 +40,7 @@ from PIL import ImageDraw, Image, ImageFont, ImageChops
 from pyrogram import *
 from pyrogram.types import *
 from logging import getLogger
+from VIPMUSIC.core.userbot import Userbot
 
 
 random_photo = [
@@ -146,6 +147,7 @@ async def auto_state(_, message):
 @app.on_chat_member_updated(filters.group, group=-3)
 async def greet_new_member(_, member: ChatMemberUpdated):
     chat_id = member.chat.id
+    userbot = await get_assistant(message.chat.id)
     count = await app.get_chat_members_count(chat_id)
     A = await wlcm.find_one(chat_id)
     if A:
@@ -175,7 +177,7 @@ async def greet_new_member(_, member: ChatMemberUpdated):
             add_button_text = "๏ ᴋɪᴅɴᴀᴘ ᴍᴇ ๏"
             deep_link = f"tg://openmessage?user_id={user.id}"
             add_link = f"https://t.me/{app.username}?startgroup=true"
-            temp.MELCOW[f"welcome-{member.chat.id}"] = await app.send_photo(
+            temp.MELCOW[f"welcome-{member.chat.id}"] = await userbot.send_photo(
                 member.chat.id,
                 photo=welcomeimg,
                 caption=f"""
