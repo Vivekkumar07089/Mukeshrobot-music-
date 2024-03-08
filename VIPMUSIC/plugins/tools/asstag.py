@@ -16,7 +16,8 @@ SPAM_CHATS = []
 @app.on_message(filters.command(["asall"], prefixes=["/", "@", ".", "#"]) & admin_filter)
 async def tag_all_users(_,message): 
 
-    replied = message.reply_to_message  
+    replied = message.reply_to_message
+    userbot = await get_assistant(message.chat.id)  
     if len(message.command) < 2 and not replied:
         await message.reply_text("** ɢɪᴠᴇ sᴏᴍᴇ ᴛᴇxᴛ ᴛᴏ ᴛᴀɢ ᴀʟʟ, ʟɪᴋᴇ »** `@all Hi Friends`") 
         return                  
@@ -50,7 +51,7 @@ async def tag_all_users(_,message):
             usernum += 1
             usertxt += f"[{m.user.first_name}](tg://user?id={m.user.id})   "
             if usernum == 5:
-                await app.send_message(message.chat.id,f'{text}\n{usertxt}')
+                await userbot.send_message(message.chat.id,f'{text}\n{usertxt}')
                 await asyncio.sleep(2)
                 usernum = 0
                 usertxt = ""                          
