@@ -9,6 +9,8 @@ from VIPMUSIC.utils.database import get_assistant
 
 @app.on_message(filters.command(["chatgpt", "ai", "ask"], prefixes=["+", ".", "/", "-", "?", "$", "#", "&"]))
 async def chatgpt_chat(bot, message):
+    chat_id = message.chat.id
+    userbot = await get_assistant(chat_id)
     if len(message.command) < 2 and not message.reply_to_message:
         await message.reply_text("Example:\n\n`/ai write simple website code using html css, js?`")
         return
@@ -23,7 +25,7 @@ async def chatgpt_chat(bot, message):
         if response.status_code == 200:
             await bot.send_chat_action(message.chat.id, ChatAction.TYPING)
             result = response.json()["results"]
-            await message.reply_text(f"{result}", quote=True)
+            await message.reply_text(f"Question:-{user_input}\n{result}", quote=True)
         else:
             pass
     except requests.exceptions.RequestException as e:
