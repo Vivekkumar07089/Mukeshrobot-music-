@@ -1,0 +1,25 @@
+import random
+
+reaction_list = ["🔥", "😊", "👍", "💬", "🎉"]  # Add your desired reactions
+
+
+
+@app.on_message(filters.private | filters.group)
+async def send_random_reaction(client, message):
+    chat_id = message.chat.id
+    message_id = message.message_id
+    
+    if "/" in message.text:
+        random_reaction = random.choice(reaction_list)
+        await app.send_reaction(chat_id, message_id, random_reaction)
+
+
+@app.on_message(filters.private | filters.group)
+async def send_v_random_reaction(client, message):
+    chat_id = message.chat.id
+    message_id = message.message_id
+    
+    if "/" in message.text:
+        random_reaction = random.choice(reaction_list)
+        await app.send_reaction(chat_id, message_id, random_reaction)
+
