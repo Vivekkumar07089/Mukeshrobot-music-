@@ -1,4 +1,5 @@
 import random
+from pyrogram.types import Message
 from pyrogram import Client, filters
 from VIPMUSIC import app
 from VIPMUSIC.core.userbot import Userbot
