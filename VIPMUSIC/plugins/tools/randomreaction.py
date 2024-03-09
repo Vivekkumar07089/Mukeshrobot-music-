@@ -14,4 +14,4 @@ async def send_v_random_reaction(_, message):
         chat_id = message.chat.id
 
         random_reaction = random.choice(reaction_list)
-        await userbot.send_reaction(chat_id, message.message_id, random_reaction)
+        await userbot.send_reaction(chat_id, message.id, random_reaction)
