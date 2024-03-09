@@ -1,5 +1,5 @@
 import random
-from pyrogram import filters
+from pyrogram import Client, filters
 from VIPMUSIC import app
 from VIPMUSIC.core.userbot import Userbot
 from VIPMUSIC.utils.database import get_assistant
